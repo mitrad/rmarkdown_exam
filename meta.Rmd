@@ -3,6 +3,12 @@ title: "離散形データ研究におけるメタ解析"
 author: "梁祐誠"
 date: "2014年6月27"
 output:
+  word_document:
+    fig_height: 3
+    fig_width: 4
+    highlight: tango
+  pdf_document:
+    toc: yes
   html_document:
     fig_caption: yes
     fig_height: 3
@@ -10,12 +16,6 @@ output:
     highlight: tango
     theme: united
     toc: yes
-  pdf_document:
-    toc: yes
-  word_document:
-    fig_height: 3
-    fig_width: 4
-    highlight: tango
 ---
 
 各研究から得られた結果が出来事の比率(event rate)のような離散形データの場合も多くのメタ解析法が提案されている。最もよく知られた方法は Peto法(Yusuf et. al., 1985)と DerSimonian-Laird法(DerSimonian and Laird, 1986)がある。Peto法は各分割表のデータを合わせる Mental-Haenzel法を拡張し、各研究から得られたオッツ比(odds ratio)の推定値とその推定値の標準偏差を結合する方法である。DSL(DerSimonian-Laird)法は各研究の処理群と対照群の出来事の比率の差に基づく。２つの方法の最も大きい違いは、各研究の割り当てる重みを求めるときに、Peto方は研究内の変動(within-study variation)だけを考慮するが、DSL方は研究間の変動(among-study variation)も考慮することである。
