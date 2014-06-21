@@ -156,8 +156,6 @@ m1</code></pre>
 <p>上の結果のうち、Fixed effect modelがPetoの方法、Random effects modelがDSL方法によって計算されたオッツ比と<span class="math">\(95\%\)</span>信頼区間である。メタ解析では引用された研究の結果が同質であると仮定している。従って、ORを統合する前に各研究の結果に対する同質性検定（Test of Homogeneity）を行う必要がある。Test of heterogeneityの結果をみると有意水準<span class="math">\(5\%\)</span>で検定を行った場合、各研究から求めたオッツ比が同質的であるという帰無仮説を棄却することができない。従って、このメタ解析から求められたオッツ比は有意であることが分かる。</p>
 <p>特定の条件を満たす研究を分類して結果をみることも可能である。例えば、1980年以前の研究と以後の研究を分類して結果を見るためには</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1, <span class="dt">byvar=</span>Fleiss93$year&lt;<span class="dv">1980</span>, <span class="dt">bylab=</span><span class="st">&quot;year&lt;1980&quot;</span>)</code></pre>
-<pre><code>## Warning: Argument 'byvar' has been removed from R function summary.meta.
-##   This argument can either be used in R function update.meta or metabin.</code></pre>
 <pre><code>## Number of studies combined: k=7
 ## 
 ##                         OR         95%-CI      z  p.value

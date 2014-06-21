@@ -3,12 +3,6 @@ title: "離散形データ研究におけるメタ解析"
 author: "梁祐誠"
 date: "2014年6月27"
 output:
-  word_document:
-    fig_height: 3
-    fig_width: 4
-    highlight: tango
-  pdf_document:
-    toc: yes
   html_document:
     fig_caption: yes
     fig_height: 3
@@ -16,6 +10,12 @@ output:
     highlight: tango
     theme: united
     toc: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    fig_height: 3
+    fig_width: 4
+    highlight: tango
 ---
 
 各研究から得られた結果が出来事の比率(event rate)のような離散形データの場合も多くのメタ解析法が提案されている。最もよく知られた方法は Peto法(Yusuf et. al., 1985)と DerSimonian-Laird法(DerSimonian and Laird, 1986)がある。Peto法は各分割表のデータを合わせる Mental-Haenzel法を拡張し、各研究から得られたオッツ比(odds ratio)の推定値とその推定値の標準偏差を結合する方法である。DSL(DerSimonian-Laird)法は各研究の処理群と対照群の出来事の比率の差に基づく。２つの方法の最も大きい違いは、各研究の割り当てる重みを求めるときに、Peto方は研究内の変動(within-study variation)だけを考慮するが、DSL方は研究間の変動(among-study variation)も考慮することである。
@@ -88,7 +88,7 @@ m1
 上の結果のうち、Fixed effect modelがPetoの方法、Random effects modelがDSL方法によって計算されたオッツ比と$95\%$信頼区間である。メタ解析では引用された研究の結果が同質であると仮定している。従って、ORを統合する前に各研究の結果に対する同質性検定（Test of Homogeneity）を行う必要がある。Test of heterogeneityの結果をみると有意水準$5\%$で検定を行った場合、各研究から求めたオッツ比が同質的であるという帰無仮説を棄却することができない。従って、このメタ解析から求められたオッツ比は有意であることが分かる。
 
 特定の条件を満たす研究を分類して結果をみることも可能である。例えば、1980年以前の研究と以後の研究を分類して結果を見るためには
-```{r}
+```{r, warning=FALSE}
 summary(m1, byvar=Fleiss93$year<1980, bylab="year<1980")
 ```
 メタ解析の結果を視覚的に示すためにフォレストプロット(Forest Plot)と呼ばれる方法が多くの研究で使用されている。フォレストプロットは縦軸に各研究結果を並べて、横軸にORをとる手法で、黒い四角の大きさは各研究の重みを相対的に示しており、その四角から左右に延びた直線は$95\%$信頼区間である。
