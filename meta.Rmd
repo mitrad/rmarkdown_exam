@@ -1,0 +1,101 @@
+---
+title: "離散形データ研究におけるメタ解析"
+author: "梁祐誠"
+date: "2014年6月27"
+output:
+  html_document:
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 4
+    highlight: tango
+    theme: united
+    toc: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    fig_height: 3
+    fig_width: 4
+    highlight: tango
+---
+
+各研究から得られた結果が出来事の比率(event rate)のような離散形データの場合も多くのメタ解析法が提案されている。最もよく知られた方法は Peto法(Yusuf et. al., 1985)と DerSimonian-Laird法(DerSimonian and Laird, 1986)がある。Peto法は各分割表のデータを合わせる Mental-Haenzel法を拡張し、各研究から得られたオッツ比(odds ratio)の推定値とその推定値の標準偏差を結合する方法である。DSL(DerSimonian-Laird)法は各研究の処理群と対照群の出来事の比率の差に基づく。２つの方法の最も大きい違いは、各研究の割り当てる重みを求めるときに、Peto方は研究内の変動(within-study variation)だけを考慮するが、DSL方は研究間の変動(among-study variation)も考慮することである。
+
+##Peto法
+
+Peto法は複数の分割表からデータを結合するための Mentel-Haenzel法を修正したものである。$i$番目の研究($i = 1, \cdots, K$)から$N$名の患者さんがあり、各研究では処理群と対照群があるとする。また、処理群には$n_i$名があり、すなわち、対処群には$N_i - n_i$名がいるとする。2つのグルプの全体で$d_i$の出来事(event)があり、処理群では$O_i$の出来事(対処群では$d_i - O_i$の出来事がある)があるとする。処理の効果がないと仮定するとき、処理群でおこる出来事の期待値は $E_i = (n_i/N_i)d_i$である。$N_i, n_i, d_i$が与えられると$O_i$が超幾何分布( hypergeometric distribution)に従うことを用いて、処理効果がないという帰無仮説のもとで$O_i - E_i$は平均が0、分散が$V_i = E_i[(N_i - n_i)/N_i][(N_i - d_i)(N_i -1)]$になることを導くことができる。従って、検定統計量である
+
+$$
+\frac{\left[ \sum_{i=1}^K (O_i - E_i) \right]^2}{\sum_{i=1}^K V_i}
+$$
+
+は近似的に自由度1の$\chi^2$分布に従う。$K$個の研究から結合(pooled)されたオッツ比の推定値は
+$$
+\widehat{OR} = exp \left[ \frac{\sum_{i=1}^K (O_i - E_i) }{\sum_{i=1}^K V_i} \right]
+$$
+であり、$\ln (\widehat{OR})$の標準誤差は $SE(\ln \widehat{OR})=\left ( \sum V_i \right )^{-1/2} $である。$\ln (\widehat{OR})$をその標準誤差で割ると上記の$\chi^2$-統計量の二乗根に符号をつけたものと同じになり、正規分布に従う。従って、$OR$に対する$100(1-\alpha)\%$信頼区間は
+$$
+exp \left [ \frac{\sum(O_i - E_i)}{\sum V_i} \pm \frac{Z_{\alpha/2}}{\sqrt{\sum V_i}} \right ]
+$$
+となる。各研究から求めたオッツ比の等質性検定は検定統計量である
+$$
+Q= \sum \left [ \frac{(O_i-E_i)^2}{V_i} \right ] - \frac{[\sum (O_i - E_i)]^2}{\sum V_i}
+$$
+が、近似的に自由度$K-1$の$\chi^2$分布に従うことを利用する。すなわち、検定統計量の値が$\chi_{\alpha}^2 (K-1)$より大きいと各研究から求めたオッツ比が同じであるという帰無仮説を棄却する。
+
+##DerSimonian-Laird法
+ 
+$i$番目の研究($i = 1, \cdots, K$)から$d_{t_i}$と$d_{c_i}$をそれぞれ、サイズ$n_{t_i}$の処理群と$n_{c_i}$の対照群でおこる出来事の数とすると、出来事の比率の差は
+$$
+\hat \theta_i = \hat{p_{t_i}} - \hat{p_{c_i}} = d_{t_i} / n_{t_i} - d_{c_i} / n_{c_i}
+$$
+となり、その分散は二項分布から
+$$
+S_i = \frac{\hat{p_{t_i}} (1-  \hat{p_{t_i}})}{n_{t_i} }+ \frac{\hat{p_{c_i}} (1-  \hat{p_{c_i}})}{n_{c_i}} 
+$$
+と推定することができる。同質性検定のための検定統計量は
+$$
+Q= \sum w_i (\hat \theta_i - \bar\theta_w)^2
+$$
+となる。ただし、$w_i = S_i^{-1}$であり、$\bar\theta_w = {\sum w_i \hat\theta_i}/{\sum w_i}$である。$n_{c_i}$と$n_{t_i}$が大きいとき、各研究からの出来事の比率の差が同じであるという帰無仮説のもとで$Q$は近似的に自由度$K-1$の$\chi^2$分布に従う。
+
+ここで、各研究から求めた出来事の比率の差を結合する方法について論機する。$i$-番目の研究での処理効果を$\theta_i$とし、$\theta_i$の平均と分散をそれぞれ$\mu$と$\tau^2$とする。研究間の分散の推定値は
+$$
+\hat\tau^2 = \max \left [ 0, \frac{Q-(K-1)}{\sum w_i - (\sum w_i^2 / \sum w_i)} \right ] 
+$$
+となり、$w_i^* = (S_i + \hat\tau^2)^{-1}$と定義すると、結合された処理効果は
+$$
+\hat\mu = \frac{\sum w_i^* \hat\theta_i}{\sum w_i^*}
+$$ 
+となり、その標準誤差は$SE(\hat\mu) = (\sum w_i^*)^{-1/2}$となる。
+
+ただし、メタ解析が客観的かつ記述的情報を提供する有用な統計的方法であることは明らかであるが、確定的な結論を導くのにも用いるより、あくまでもそれまでの研究結果を統合して、新たな研究方向を提示する方法として考慮されるのが望ましい。
+
+## Rのmeta packageを用いたメタ解析
+Rでメタ解析をするためには **meta**パッケージを利用すると便利である。この章ではFleiss(1993)の心筋梗塞の後、Aspirinの死亡防止効果に関するデータを用いてメタ解析を行う。データの構成は以下のようである。
+まず、メタ解析をするために**meta**パッケージとデータを読み込む。
+
+```{r}
+library(meta)
+data("Fleiss93")
+Fleiss93
+```
+
+次に関数`metabin`を用いてメタ解析を行う。
+```{r}
+m1 <- metabin(event.e, n.e, event.c, n.c, data=Fleiss93, studlab=paste(study,year), sm="OR")
+m1
+```
+上の結果のうち、Fixed effect modelがPetoの方法、Random effects modelがDSL方法によって計算されたオッツ比と$95\%$信頼区間である。メタ解析では引用された研究の結果が同質であると仮定している。従って、ORを統合する前に各研究の結果に対する同質性検定（Test of Homogeneity）を行う必要がある。Test of heterogeneityの結果をみると有意水準$5\%$で検定を行った場合、各研究から求めたオッツ比が同質的であるという帰無仮説を棄却することができない。従って、このメタ解析から求められたオッツ比は有意であることが分かる。
+
+特定の条件を満たす研究を分類して結果をみることも可能である。例えば、1980年以前の研究と以後の研究を分類して結果を見るためには
+```{r}
+summary(m1, byvar=Fleiss93$year<1980, bylab="year<1980")
+```
+メタ解析の結果を視覚的に示すためにフォレストプロット(Forest Plot)と呼ばれる方法が多くの研究で使用されている。フォレストプロットは縦軸に各研究結果を並べて、横軸にORをとる手法で、黒い四角の大きさは各研究の重みを相対的に示しており、その四角から左右に延びた直線は$95\%$信頼区間である。
+
+```{r fig.cap = "Forest plot"}
+forest(m1, comb.fixed = FALSE, leftcols = "studlab", rightcol = FALSE)
+```
+```{r fig.cap = "funnel plot"}
+funnel(m1)
+```
