@@ -1,0 +1,3 @@
+\contentsline {subsection}{Peto法}{1}{section*.2}
+\contentsline {subsection}{DerSimonian-Laird法}{2}{section*.3}
+\contentsline {subsection}{Rのmeta packageを用いたメタ解析}{2}{section*.4}
