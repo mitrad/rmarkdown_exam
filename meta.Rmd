@@ -3,6 +3,10 @@ title: "離散形データ研究におけるメタ解析"
 author: "梁祐誠"
 date: "2014年6月27"
 output:
+  word_document:
+    fig_height: 3
+    fig_width: 4
+    highlight: tango
   pdf_document:
     keep_tex: yes
     latex_engine: lualatex
@@ -14,10 +18,6 @@ output:
     highlight: tango
     theme: united
     toc: yes
-  word_document:
-    fig_height: 3
-    fig_width: 4
-    highlight: tango
 ---
 
 各研究から得られた結果が出来事の比率(event rate)のような離散形データの場合も多くのメタ解析法が提案されている。最もよく知られた方法は Peto法(Yusuf et. al., 1985)と DerSimonian-Laird法(DerSimonian and Laird, 1986)がある。Peto法は各分割表のデータを合わせる Mental-Haenzel法を拡張し、各研究から得られたオッツ比(odds ratio)の推定値とその推定値の標準偏差を結合する方法である。DSL(DerSimonian-Laird)法は各研究の処理群と対照群の出来事の比率の差に基づく。２つの方法の最も大きい違いは、各研究の割り当てる重みを求めるときに、Peto方は研究内の変動(within-study variation)だけを考慮するが、DSL方は研究間の変動(among-study variation)も考慮することである。
@@ -76,14 +76,14 @@ $$
 Rでメタ解析をするためには **meta**パッケージを利用すると便利である。この章ではFleiss(1993)の心筋梗塞の後、Aspirinの死亡防止効果に関するデータを用いてメタ解析を行う。データの構成は以下のようである。
 まず、メタ解析をするために**meta**パッケージとデータを読み込む。
 
-```{r}
+```{r, echo=FALSE}
 library(meta)
 data("Fleiss93")
 Fleiss93
 ```
 
 次に関数`metabin`を用いてメタ解析を行う。
-```{r}
+```{r, echo=FALSE}
 m1 <- metabin(event.e, n.e, event.c, n.c, data=Fleiss93, studlab=paste(study,year), sm="OR")
 m1
 ```

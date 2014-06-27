@@ -112,11 +112,8 @@ Q= \sum w_i (\hat \theta_i - \bar\theta_w)^2
 <div id="rmeta-package" class="section level2">
 <h2>Rのmeta packageを用いたメタ解析</h2>
 <p>Rでメタ解析をするためには <strong>meta</strong>パッケージを利用すると便利である。この章ではFleiss(1993)の心筋梗塞の後、Aspirinの死亡防止効果に関するデータを用いてメタ解析を行う。データの構成は以下のようである。 まず、メタ解析をするために<strong>meta</strong>パッケージとデータを読み込む。</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(meta)</code></pre>
 <pre><code>## Loading required package: grid
 ## Loading 'meta' package (version 3.6-0).</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;Fleiss93&quot;</span>)
-Fleiss93</code></pre>
 <pre><code>##    study year event.e  n.e event.c  n.c
 ## 1  MRC-1 1974      49  615      67  624
 ## 2    CDP 1976      44  758      64  771
@@ -126,8 +123,6 @@ Fleiss93</code></pre>
 ## 6   AMIS 1980     246 2267     219 2257
 ## 7 ISIS-2 1988    1570 8587    1720 8600</code></pre>
 <p>次に関数<code>metabin</code>を用いてメタ解析を行う。</p>
-<pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">metabin</span>(event.e, n.e, event.c, n.c, <span class="dt">data=</span>Fleiss93, <span class="dt">studlab=</span><span class="kw">paste</span>(study,year), <span class="dt">sm=</span><span class="st">&quot;OR&quot;</span>)
-m1</code></pre>
 <pre><code>##                 OR           95%-CI %W(fixed) %W(random)
 ## MRC-1 1974  0.7197 [0.4890; 1.0593]      3.18       8.21
 ## CDP 1976    0.6808 [0.4574; 1.0132]      3.10       7.85
